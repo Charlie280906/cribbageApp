@@ -185,8 +185,7 @@ def game_page():
             if row2[2].button("Prev. Couldn't Play", key=f"go_{i}", use_container_width=True):
                 game["scores"][i] += 1
                 update_and_save()
-
-    st.divider()
+            st.divider()
 
     # TOP CONTROLS
     col1, col2 = st.columns(2)
