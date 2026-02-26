@@ -339,7 +339,7 @@ def leaderboard_screen():
     table_data = []
     for idx, (player, score) in enumerate(rows, start=2):
         table_data.append({
-            # "Position": idx,
+            "Position": idx,
             "Player": player,
             "Overall Score": score
         })
