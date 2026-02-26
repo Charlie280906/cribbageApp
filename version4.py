@@ -152,46 +152,55 @@ def pin_screen():
 # =====================================================
 
 def create_game_screen():
-    st.title("🆕 Create New Game")
+    st.title("🃏 Cribbage Tracker")
 
     num_players = st.number_input("Number of Players", min_value=2, step=1)
+
+    st.divider()
+
     pin = st.text_input("Create 4 Digit Game PIN", max_chars=4)
 
     names = []
     for i in range(num_players):
         names.append(st.text_input(f"Player {i+1} Name", key=f"name_create_{i}"))
 
-    if st.button("Start Game", type="primary"):
-        if not (len(pin) == 4 and pin.isdigit()):
-            st.error("PIN must be exactly 4 digits.")
-            return
+    st.divider()
 
-        if pin_exists(pin):
-            st.error("PIN already in use.")
-            return
+    col1, col2 = st.columns(2)
 
-        if not all(names):
-            st.error("Enter all player names.")
-            return
+    with col1:
+        if st.button("Start Game", type="primary", width="stretch", icon="🏁"):
+            if not (len(pin) == 4 and pin.isdigit()):
+                st.error("PIN must be exactly 4 digits.")
+                return
 
-        game = {
-            "players": names,
-            "scores": [0] * num_players,
-            "dealer_index": random.randint(0, num_players - 1),
-            "round": 1,
-            "history": []
-        }
+            if pin_exists(pin):
+                st.error("PIN already in use.")
+                return
 
-        save_game(pin, game)
+            if not all(names):
+                st.error("Enter all player names.")
+                return
 
-        st.session_state.current_pin = pin
-        st.session_state.game = game
-        st.session_state.page = "game"
-        st.rerun()
+            game = {
+                "players": names,
+                "scores": [0] * num_players,
+                "dealer_index": random.randint(0, num_players - 1),
+                "round": 1,
+                "history": []
+            }
 
-    if st.button("Back"):
-        st.session_state.page = "pin"
-        st.rerun()
+            save_game(pin, game)
+
+            st.session_state.current_pin = pin
+            st.session_state.game = game
+            st.session_state.page = "game"
+            st.rerun()
+
+    with col2:
+        if st.button("Back", width="stretch", icon="↩️"):
+            st.session_state.page = "pin"
+            st.rerun()
 
 # =====================================================
 # UNDO DIALOG
