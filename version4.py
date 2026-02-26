@@ -337,29 +337,29 @@ def leaderboard_screen():
         st.info("No games recorded yet.")
         return
 
-    # table_data = []
-    # df = pd.DataFrame(table_data)
-    # for idx, (player, score) in enumerate(rows, start=1):
-    #     table_data.append({
-    #         "Position": idx,
-    #         "Player": player,
-    #         "Overall Score": score
-    #     })
-
-    # Create DataFrame
     df = pd.DataFrame(rows, columns=["Player", "Overall Score"])
-
-    # Add Position column starting from 1
     df.insert(0, "Position", range(1, len(df) + 1))
 
-    # Display clean table (no grey index column)
-    st.dataframe(
+    st.data_editor(
         df,
         hide_index=True,
-        use_container_width=True
+        use_container_width=True,
+        disabled=True,  # Makes it read-only
+        column_config={
+            "Position": st.column_config.NumberColumn(
+                "Position",
+                width="small"  # small | medium | large
+            ),
+            "Player": st.column_config.TextColumn(
+                "Player",
+                width="medium"
+            ),
+            "Overall Score": st.column_config.NumberColumn(
+                "Overall Score",
+                width="small"
+            )
+        }
     )
-
-    # st.table(table_data)
 
     st.divider()
 
