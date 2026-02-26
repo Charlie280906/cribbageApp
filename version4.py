@@ -3,6 +3,7 @@ import sqlite3
 import random
 import json
 from datetime import datetime
+import pandas as pd
 
 st.set_page_config(page_title="Cribbage Tracker", layout="centered")
 
@@ -336,15 +337,29 @@ def leaderboard_screen():
         st.info("No games recorded yet.")
         return
 
-    table_data = []
-    for idx, (player, score) in enumerate(rows, start=2):
-        table_data.append({
-            "Position": idx,
-            "Player": player,
-            "Overall Score": score
-        })
+    # table_data = []
+    # df = pd.DataFrame(table_data)
+    # for idx, (player, score) in enumerate(rows, start=1):
+    #     table_data.append({
+    #         "Position": idx,
+    #         "Player": player,
+    #         "Overall Score": score
+    #     })
 
-    st.table(table_data)
+    # Create DataFrame
+    df = pd.DataFrame(rows, columns=["Player", "Overall Score"])
+
+    # Add Position column starting from 1
+    df.insert(0, "Position", range(1, len(df) + 1))
+
+    # Display clean table (no grey index column)
+    st.dataframe(
+        df,
+        hide_index=True,
+        use_container_width=True
+    )
+
+    # st.table(table_data)
 
     st.divider()
 
