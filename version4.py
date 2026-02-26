@@ -160,9 +160,11 @@ def create_game_screen():
 
     pin = st.text_input("Create 4 Digit Game PIN", max_chars=4)
 
+    st.divider()
+
     names = []
     for i in range(num_players):
-        names.append(st.text_input(f"Player {i+1} Name", key=f"name_create_{i}"))
+        names.append(st.text_input(f"Player {i+1} Name", key=f"name_create_{i}").title())
 
     st.divider()
 
@@ -233,20 +235,27 @@ def game_screen():
         save_game(pin, game)
         st.rerun()
 
-    st.title(f"🃏 Game PIN: {pin}")
-    st.markdown(f"### Round {game['round']}")
+    st.title("🃏 Cribbage Tracker")
+
+    col1, col2 = st.columns(2)
+
+    with col1:
+        st.markdown(f"### Round {game['round']}")
+
+    with col2:
+        st.markdown(f"### Game PIN: {pin}")
 
     with st.container(border=True):
         dealer = game["players"][game["dealer_index"]]
         st.markdown(f"#### Dealer: **{dealer}**")
 
-        if st.button("New Round"):
+        if st.button("New Round", width="stretch", type="primary"):
             record_history()
             game["dealer_index"] = (game["dealer_index"] + 1) % len(game["players"])
             game["round"] += 1
             apply_and_save()
 
-        if st.button("Split to Jack"):
+        if st.button("Split to Jack", width="stretch"):
             record_history()
             game["scores"][game["dealer_index"]] += 2
             apply_and_save()
@@ -264,46 +273,55 @@ def game_screen():
                 game["scores"][i] += points
                 apply_and_save()
 
-            if st.button("Made 15", key=f"15_{i}"):
-                add_score(2)
+            col1, col2, col3 = st.columns(3)
 
-            if st.button("Made 31", key=f"31_{i}"):
-                add_score(2)
+            with col1:
+                if st.button("Made 15", key=f"15_{i}", width="stretch"):
+                    add_score(2)
 
-            if st.button("Pair", key=f"pair_{i}"):
-                add_score(2)
+            with col2:
+                if st.button("Made 31", key=f"31_{i}", width="stretch"):
+                    add_score(2)
 
-            if st.button("Triple", key=f"triple_{i}"):
-                add_score(6)
+            with col3:
+                if st.button("Pair", key=f"pair_{i}", width="stretch"):
+                    add_score(2)
 
-            if st.button("3 in a Row", key=f"run_{i}"):
-                add_score(6)
+            col1, col2, col3 = st.columns(3)
 
-            if st.button("Prev. Couldn't Play", key=f"go_{i}"):
-                add_score(1)
+            with col1:
+                if st.button("Triple", key=f"triple_{i}", width="stretch"):
+                    add_score(6)
+
+            with col2:
+                if st.button("3 in a Row", key=f"run_{i}", width="stretch"):
+                    add_score(6)
+
+            with col3:
+                if st.button("Prev. Couldn't Play", key=f"go_{i}", width="stretch"):
+                    add_score(1)
 
     st.divider()
 
-    col1, col2, col3 = st.columns(3)
+    col1, col2 = st.columns(2)
 
     with col1:
-        if st.button("Undo"):
-            confirm_undo()
-
-    with col2:
-        if st.button("Finish Game"):
+        if st.button("Finish Game", type="primary", width="stretch", icon="🛑"):
             update_leaderboard(game)
             delete_game(pin)
             st.session_state.page = "leaderboard"
             st.session_state.game = None
             st.rerun()
 
-    with col3:
-        if st.button("Exit to PIN"):
-            st.session_state.page = "pin"
-            st.session_state.game = None
-            st.session_state.current_pin = None
-            st.rerun()
+    with col2:
+        if st.button("Undo", width="stretch", icon="🔄"):
+            confirm_undo()
+
+    if st.button("Exit to PIN", width="stretch", icon="🗑️"):
+        st.session_state.page = "pin"
+        st.session_state.game = None
+        st.session_state.current_pin = None
+        st.rerun()
 
 # =====================================================
 # LEADERBOARD SCREEN
