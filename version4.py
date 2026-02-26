@@ -210,7 +210,7 @@ def create_game_screen():
 
 @st.dialog("Confirm Undo")
 def confirm_undo():
-    if st.button("Yes, Undo"):
+    if st.button("Yes, Undo", width="stretch", icon="⚠️"):
         game = st.session_state.game
         if game["history"]:
             previous_state = game["history"].pop()
