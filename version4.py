@@ -328,7 +328,7 @@ def game_screen():
 # =====================================================
 
 def leaderboard_screen():
-    st.title("🏆 All-Time Leaderboard")
+    st.title("🏆 Cribbage All-Time Leaderboard")
 
     rows = get_leaderboard()
 
@@ -339,7 +339,7 @@ def leaderboard_screen():
     table_data = []
     for idx, (player, score) in enumerate(rows, start=1):
         table_data.append({
-            "Position": idx,
+            # "Position": idx,
             "Player": player,
             "Overall Score": score
         })
@@ -350,13 +350,13 @@ def leaderboard_screen():
 
     col1, col2 = st.columns(2)
 
-    with col1:
-        if st.button("Join Game with PIN"):
+    with col2:
+        if st.button("Join Game with PIN", width="stretch", icon="🔒"):
             st.session_state.page = "pin"
             st.rerun()
 
-    with col2:
-        if st.button("Start New Game"):
+    with col1:
+        if st.button("Start New Game", width="stretch", icon="✏️", type="primary"):
             st.session_state.page = "create"
             st.rerun()
 
