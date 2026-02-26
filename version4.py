@@ -124,30 +124,28 @@ if "game" not in st.session_state:
 # =====================================================
 
 def pin_screen():
-    st.title("🔐 Enter Game PIN")
+    st.title("🃏 Cribbage Tracker")
 
-    pin = st.text_input("Enter 4 Digit PIN", max_chars=4)
+    pin = st.number_input("Enter 4 Digit PIN", min=0000, max=9999, placeholder="")
 
-    col1, col2 = st.columns(2)
-
-    with col1:
-        if st.button("Join Game"):
-            if len(pin) == 4 and pin.isdigit():
-                game = load_game(pin)
-                if game:
-                    st.session_state.current_pin = pin
-                    st.session_state.game = game
-                    st.session_state.page = "game"
-                    st.rerun()
-                else:
-                    st.error("No game found with that PIN.")
+    if st.button("Join Game", width="stretch", type="primary", icon="✅"):
+        if len(pin) == 4 and pin.isdigit():
+            game = load_game(pin)
+            if game:
+                st.session_state.current_pin = pin
+                st.session_state.game = game
+                st.session_state.page = "game"
+                st.rerun()
             else:
-                st.error("PIN must be 4 digits.")
+                st.error("No game found with that PIN.")
+        else:
+            st.error("PIN must be 4 digits.")
 
-    with col2:
-        if st.button("Create New Game"):
-            st.session_state.page = "create"
-            st.rerun()
+    st.divider()
+
+    if st.button("Create New Game", icon="✏️"):
+        st.session_state.page = "create"
+        st.rerun()
 
 # =====================================================
 # CREATE GAME
