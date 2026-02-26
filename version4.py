@@ -337,7 +337,7 @@ def leaderboard_screen():
         return
 
     table_data = []
-    for idx, (player, score) in enumerate(rows, start=1):
+    for idx, (player, score) in enumerate(rows, start=2):
         table_data.append({
             # "Position": idx,
             "Player": player,
@@ -351,7 +351,7 @@ def leaderboard_screen():
     col1, col2 = st.columns(2)
 
     with col2:
-        if st.button("Join Game with PIN", width="stretch", icon="🔒"):
+        if st.button("Join Game with PIN", width="stretch", icon="🔑"):
             st.session_state.page = "pin"
             st.rerun()
 
