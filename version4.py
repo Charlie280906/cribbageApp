@@ -126,7 +126,7 @@ if "game" not in st.session_state:
 def pin_screen():
     st.title("🃏 Cribbage Tracker")
 
-    pin = st.number_input("Enter 4 Digit PIN", min=0000, max=9999, placeholder="")
+    pin = st.number_input("Enter 4 Digit PIN", min_value=0000, max_value=9999, placeholder="")
 
     if st.button("Join Game", width="stretch", type="primary", icon="✅"):
         if len(pin) == 4 and pin.isdigit():
